@@ -55,6 +55,7 @@ public class RESTestLoader {
 	String allureReportsPath;							// Path to Allure reports
 	Boolean checkTestCases;								// If 'true', test cases will be checked with OASValidator before executing them
 	String proxy;										// Proxy to use for all requests in format host:port
+	String[] headers;                       // Semicolon-delimited headers for requests
 
 	// For Constraint-based testing and AR Testing:
 	Float faultyDependencyRatio; 						// Percentage of faulty test cases due to dependencies to generate.
@@ -138,6 +139,7 @@ public class RESTestLoader {
 		writer.setAPIName(experimentName);
 		writer.setTestId(experimentName);
 		writer.setProxy(proxy);
+		writer.setHeaders(headers);
 		return writer;
 	}
 
@@ -237,6 +239,12 @@ public class RESTestLoader {
 				setProxy();
 		}
 		logger.info("Proxy: {}", proxy);
+
+		String headers = readProperty("headers");
+		if (headers != null) {
+			this.headers = headers.split(";");
+		}
+		logger.info("Headers: {}", headers);
 
 		if (readProperty("testcases.check") != null)
 			checkTestCases = Boolean.parseBoolean(readProperty("testcases.check"));
